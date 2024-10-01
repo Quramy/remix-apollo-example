@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:14.12-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-store:/var/lib/postgres/data
+    environment:
+      POSTGRES_USER: admin123
+      POSTGRES_PASSWORD: admin123
+
+volumes:
+  postgres-store:
