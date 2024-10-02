@@ -7,6 +7,7 @@ export const Query = {
   },
   post: async (_, { id }, { prisma }) => {
     const post = await prisma.post.findUnique({ where: { id } });
+    // await new Promise((res) => setTimeout(res, 1000));
     return post ? { ...post, comments: [] } : null;
   },
 } satisfies QueryResolvers;

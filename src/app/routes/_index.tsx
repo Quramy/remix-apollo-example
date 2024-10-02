@@ -1,4 +1,5 @@
 import type { MetaFunction, SerializeFrom } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 
 import { graphql } from "#app/gql";
 import { useLoaderData } from "#support/remix";
@@ -38,7 +39,9 @@ export default function Posts() {
       <section>
         <ul>
           {posts.map((post) => (
-            <li key={post.id}>{post.title}</li>
+            <li key={post.id}>
+              <Link to={`/posts/${post.id}`}>{post.title}</Link>
+            </li>
           ))}
         </ul>
       </section>
