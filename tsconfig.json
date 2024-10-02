@@ -25,6 +25,13 @@
     "paths": {
       "~/*": ["./app/*"]
     },
+    "plugins": [
+      {
+        "name": "ts-graphql-plugin",
+        "schema": "schema.graphql",
+        "exclude": ["codegen.ts", "src/app/gql", "src/server"]
+      }
+    ],
 
     // Vite takes care of building everything, not tsc.
     "noEmit": true

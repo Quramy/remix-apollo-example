@@ -2,11 +2,11 @@ overwrite: true
 schema: ./schema.graphql
 emitLegacyCommonJSImports: false
 generates:
-  src/__generated__/graphql.ts:
+  src/server/graphql/__generated__/graphql.ts:
     plugins:
       - typescript
       - add:
-          content: 'import { BaseContext } from "../server/graphql/types.js";'
+          content: 'import { BaseContext } from "../types.js";'
       - typescript-resolvers
     config:
       contextType: BaseContext

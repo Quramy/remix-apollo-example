@@ -12,6 +12,6 @@ type Comment {
 }
 
 type Query {
-  posts: [Post]!
+  posts: [Post!]!
   post(id: ID!): Post
 }
