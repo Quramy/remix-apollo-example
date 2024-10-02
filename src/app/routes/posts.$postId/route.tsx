@@ -1,15 +1,12 @@
 import { Suspense } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import {
-  createQueryPreloader,
-  useReadQuery,
-  QueryRef,
-} from "@apollo/client/index.js";
+import { createQueryPreloader, QueryRef } from "@apollo/client/index.js";
+
+import { useReadQuery } from "#support/apollo";
+import { useLoaderData } from "#support/remix";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
-
-import { useLoaderData } from "#support/remix";
 
 const query = graphql(`
   query PostDetail_Query($postId: ID!) {
@@ -19,6 +16,18 @@ const query = graphql(`
     }
   }
 `);
+
+export async function loader({ params, context }: LoaderFunctionArgs) {
+  const apolloClient = getSingletonApolloClient();
+  const { postId } = params as { readonly postId: string };
+
+  return await apolloClient.query({
+    query,
+    variables: {
+      postId,
+    },
+  });
+}
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const apolloClient = getSingletonApolloClient();

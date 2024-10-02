@@ -12,10 +12,7 @@ export function getSingletonApolloClient() {
     }
     return _client;
   } else {
-    // FIXME
-    return new ApolloClient({
-      cache: new InMemoryCache(),
-      uri: "",
-    });
+    const client = (globalThis as any).__getClient__() as ApolloClient<unknown>;
+    return client;
   }
 }
