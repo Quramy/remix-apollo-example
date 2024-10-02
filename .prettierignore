@@ -1,2 +1,3 @@
 src/app/gql/
 __generated__/
+schema.graphql
