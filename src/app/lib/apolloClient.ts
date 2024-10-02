@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from "#support/apollo";
+import { ApolloClient, InMemoryCache } from "@apollo/client/index.js";
 
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),

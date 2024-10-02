@@ -1,8 +1,8 @@
 import type { MetaFunction, SerializeFrom } from "@remix-run/node";
 
-import { graphql } from "#app/gql/index";
+import { graphql } from "#app/gql";
 import { useLoaderData } from "#support/remix";
-import { useReadQuery, createQueryPreloader } from "#support/apollo";
+import { useReadQuery, createQueryPreloader } from "@apollo/client/index.js";
 
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
 
@@ -23,7 +23,7 @@ const query = graphql(`
 `);
 
 export async function clientLoader() {
-  const apolloClient = getSingletonApolloClient()
+  const apolloClient = getSingletonApolloClient();
   return createQueryPreloader(apolloClient)(query);
 }
 
