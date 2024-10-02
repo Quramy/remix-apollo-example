@@ -6,6 +6,8 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
+import { ApolloProvider } from "@apollo/client/index.js";
+import { getSingletonApolloClient } from "#app/lib/apolloClient";
 
 import "./tailwind.css";
 
@@ -41,5 +43,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ApolloProvider client={getSingletonApolloClient()}>
+      <Outlet />
+    </ApolloProvider>
+  );
 }

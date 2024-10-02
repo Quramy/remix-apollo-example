@@ -1,10 +1,21 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client/index.js";
 
-const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
-  uri: "/api/graphql",
-});
+let _client: ApolloClient<unknown> | undefined;
 
 export function getSingletonApolloClient() {
-  return apolloClient;
+  if (typeof document !== "undefined") {
+    if (!_client) {
+      _client = new ApolloClient({
+        cache: new InMemoryCache(),
+        uri: "/api/graphql",
+      });
+    }
+    return _client;
+  } else {
+    // FIXME
+    return new ApolloClient({
+      cache: new InMemoryCache(),
+      uri: "",
+    });
+  }
 }
