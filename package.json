@@ -8,15 +8,23 @@
       "./src/app/*",
       "./src/app/*.js",
       "./src/app/*.jsx",
+      "./src/app/*/index.jsx",
+      "./src/app/*/index.js",
       "./src/app/*.ts",
-      "./src/app/*.tsx"
+      "./src/app/*.tsx",
+      "./src/app/*/index.ts",
+      "./src/app/*/index.tsx"
     ],
     "#support/*": [
       "./src/support/*",
       "./src/support/*.js",
       "./src/support/*.jsx",
+      "./src/support/*/index.jsx",
+      "./src/support/*/index.js",
       "./src/support/*.ts",
-      "./src/support/*.tsx"
+      "./src/support/*.tsx",
+      "./src/support/*/index.tsx",
+      "./src/support/*/index.ts"
     ]
   },
   "scripts": {
