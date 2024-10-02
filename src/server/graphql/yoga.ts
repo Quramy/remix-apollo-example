@@ -26,7 +26,6 @@ export function setupYoga({ graphqlEndpoint }: SetupYogaOptions) {
       };
       return context;
     },
-    fetchAPI: { Request, Response },
   });
 
   return yoga;
