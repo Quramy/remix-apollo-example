@@ -1,3 +1,5 @@
 src/app/gql/
 __generated__/
 schema.graphql
+build/
+.tsimp/

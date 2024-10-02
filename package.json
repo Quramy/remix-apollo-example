@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepare": "npm run generate",
-    "clean": "rimraf -g \"src/**/__generated__/**\" \"src/app/gql/**/*\"",
+    "clean": "rimraf -g build \"src/**/__generated__/**\" \"src/app/gql/**/*\"",
     "prebuild": "npm run generate",
     "build": "remix vite:build",
     "generate": "npm run generate:schema && npm run generate:prisma && npm run generate:graphql",
