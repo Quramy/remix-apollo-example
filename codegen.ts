@@ -8,8 +8,8 @@ const config: CodegenConfig = {
     "src/server/graphql/__generated__/graphql.ts": {
       plugins: ["typescript", "add", "typescript-resolvers"],
       config: {
-        constextType: "BaseContext",
-        content: 'import { BaseContext } from "../types.js"',
+        content: 'import type { BaseContext } from "../types.js";',
+        contextType: "BaseContext",
       },
     },
     // Client
