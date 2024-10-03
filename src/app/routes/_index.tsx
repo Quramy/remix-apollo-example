@@ -1,11 +1,12 @@
 import type { MetaFunction, SerializeFrom } from "@remix-run/node";
-import { Link } from "@remix-run/react";
 
 import { graphql } from "#app/gql";
 import { useLoaderData } from "#support/remix";
 import { useReadQuery, createQueryPreloader } from "@apollo/client/index.js";
 
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
+import { postDetail_Query } from "./posts.$postId/route";
+import { Link } from "#app/components/Link";
 
 export const meta: MetaFunction = () => {
   return [
@@ -40,7 +41,13 @@ export default function Posts() {
         <ul>
           {posts.map((post) => (
             <li key={post.id}>
-              <Link to={`/posts/${post.id}`}>{post.title}</Link>
+              <Link
+                to={`/posts/${post.id}`}
+                query={postDetail_Query}
+                variables={{ postId: post.id }}
+              >
+                {post.title}
+              </Link>
             </li>
           ))}
         </ul>

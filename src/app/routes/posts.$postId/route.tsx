@@ -1,14 +1,15 @@
 import { Suspense } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { createQueryPreloader, QueryRef } from "@apollo/client/index.js";
+import { QueryRef } from "@apollo/client/index.js";
 
 import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
+import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
 
-const query = graphql(`
+export const postDetail_Query = graphql(`
   query PostDetail_Query($postId: ID!) {
     post(id: $postId) {
       title
@@ -17,28 +18,34 @@ const query = graphql(`
   }
 `);
 
-export async function loader({ params, context }: LoaderFunctionArgs) {
-  const apolloClient = getSingletonApolloClient();
+export async function loader({ params }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
+  const apolloClient = getSingletonApolloClient();
 
   return await apolloClient.query({
-    query,
+    query: postDetail_Query,
     variables: {
       postId,
     },
   });
 }
 
-export async function clientLoader({ params }: LoaderFunctionArgs) {
-  const apolloClient = getSingletonApolloClient();
+export async function clientLoader({ params, request }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
-  return createQueryPreloader(apolloClient)(query, { variables: { postId } });
+
+  return getPreloadedQueryRef({
+    queryKey: `/posts/${postId}`,
+    query: postDetail_Query,
+    variables: {
+      postId,
+    },
+  });
 }
 
-function Inner({
+function PostDetail({
   queryRef,
 }: {
-  queryRef: QueryRef<DocumentType<typeof query>>;
+  queryRef: QueryRef<DocumentType<typeof postDetail_Query>>;
 }) {
   const { data } = useReadQuery(queryRef);
   if (!data.post) return <div>Not found...</div>;
@@ -50,11 +57,11 @@ function Inner({
   );
 }
 
-export default function PostDetail() {
+export default function Page() {
   const queryRef = useLoaderData<typeof clientLoader>();
   return (
     <Suspense fallback="loading...">
-      <Inner queryRef={queryRef} />
+      <PostDetail queryRef={queryRef} />
     </Suspense>
   );
 }
