@@ -9,11 +9,17 @@ import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
 import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
 
+import { Comment } from "./Comment";
+
 export const query = graphql(`
   query PostDetail_Query($postId: ID!) {
     post(id: $postId) {
       title
       body
+      comments {
+        id
+        ...Comment_Comment
+      }
     }
   }
 `);
@@ -53,6 +59,13 @@ function PostDetail({
     <div>
       <h2>{data.post.title}</h2>
       <p>{data.post.body}</p>
+      <ul>
+        {data.post.comments.map((comment) => (
+          <li key={comment.id}>
+            <Comment comment={comment} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
