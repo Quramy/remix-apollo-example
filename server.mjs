@@ -1,5 +1,6 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { AsyncLocalStorage } from "node:async_hooks";
 import express from "express";
 import remix from "@remix-run/express";
 
@@ -43,7 +44,12 @@ const handleSSR = remix.createRequestHandler({
     : await import("./build/server/index.js"),
 });
 
-app.all("*", handleClientAssets, handleIgnoredAssets, handleSSR);
+const contextStorage = new AsyncLocalStorage();
+globalThis.__getRequestLocalStorage__ = () => contextStorage.getStore();
+
+app.all("*", handleClientAssets, handleIgnoredAssets, (req, res, next) => {
+  contextStorage.run(new Map(), () => handleSSR(req, res, next));
+});
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);

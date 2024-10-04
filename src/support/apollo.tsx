@@ -10,6 +10,6 @@ export function useReadQuery<TData>(
 ): UseReadQueryResult<TData> {
   return (
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    "toPromise" in queryRef ? useOriginalReadQuery(queryRef) : queryRef
-  ) as any;
+    ("toPromise" in queryRef ? useOriginalReadQuery(queryRef) : queryRef) as any
+  );
 }
