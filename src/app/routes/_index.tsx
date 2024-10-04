@@ -6,7 +6,7 @@ import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
 
 import { graphql, type DocumentType } from "#app/gql";
-import { getSingletonApolloClient } from "#app/lib/apolloClient";
+import { getServerClient } from "#app/lib/apolloClient.server";
 import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
 import { Link } from "#app/components/Link";
 
@@ -29,7 +29,7 @@ export const query = graphql(`
 `);
 
 export async function loader() {
-  const apolloClient = getSingletonApolloClient();
+  const apolloClient = getServerClient();
   return await apolloClient.query({ query });
 }
 
