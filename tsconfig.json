@@ -26,6 +26,7 @@
       "~/*": ["./app/*"]
     },
     "plugins": [
+      { "name": "typescript-eslint-language-service" },
       {
         "name": "ts-graphql-plugin",
         "schema": "schema.graphql",

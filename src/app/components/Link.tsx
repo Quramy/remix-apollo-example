@@ -42,6 +42,7 @@ export function Link<T extends TypedDocumentNode<any, any>>({
       variables,
     });
     setQueryRef(queryRefStoreKey, queryRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryRefStoreKey, query]);
 
   return (

@@ -1,5 +1,3 @@
-import { PrismaClient } from "@prisma/client";
-
 import { randPost, randSentence } from "@ngneat/falso";
 
 import {
