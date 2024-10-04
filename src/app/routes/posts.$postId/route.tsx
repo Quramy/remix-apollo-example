@@ -9,7 +9,7 @@ import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
 import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
 
-export const postDetail_Query = graphql(`
+export const query = graphql(`
   query PostDetail_Query($postId: ID!) {
     post(id: $postId) {
       title
@@ -23,19 +23,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const apolloClient = getSingletonApolloClient();
 
   return await apolloClient.query({
-    query: postDetail_Query,
+    query,
     variables: {
       postId,
     },
   });
 }
 
-export async function clientLoader({ params, request }: LoaderFunctionArgs) {
+export async function clientLoader({ params }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
 
   return getPreloadedQueryRef({
     queryKey: `/posts/${postId}`,
-    query: postDetail_Query,
+    query: query,
     variables: {
       postId,
     },
@@ -45,7 +45,7 @@ export async function clientLoader({ params, request }: LoaderFunctionArgs) {
 function PostDetail({
   queryRef,
 }: {
-  queryRef: QueryRef<DocumentType<typeof postDetail_Query>>;
+  queryRef: QueryRef<DocumentType<typeof query>>;
 }) {
   const { data } = useReadQuery(queryRef);
   if (!data.post) return <div>Not found...</div>;
@@ -60,8 +60,10 @@ function PostDetail({
 export default function Page() {
   const queryRef = useLoaderData<typeof clientLoader>();
   return (
-    <Suspense fallback="loading...">
-      <PostDetail queryRef={queryRef} />
-    </Suspense>
+    <main>
+      <Suspense fallback="loading...">
+        <PostDetail queryRef={queryRef} />
+      </Suspense>
+    </main>
   );
 }
