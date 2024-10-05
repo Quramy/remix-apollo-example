@@ -17,12 +17,14 @@ export function setContextValue<T>(key: string, value: T): void {
 }
 
 export function cache<T extends () => any, V extends ReturnType<T>>(
-  factory: T
-): V {
-  const key = factory.toString();
-  const cachedValue = getContextValue<V>(key);
-  if (cachedValue) return cachedValue;
-  const value = factory();
-  setContextValue(key, value);
-  return value;
+  fn: T
+): () => V {
+  const key = fn.toString();
+  return () => {
+    const cachedValue = getContextValue<V>(key);
+    if (cachedValue) return cachedValue;
+    const value = fn();
+    setContextValue(key, value);
+    return value;
+  };
 }

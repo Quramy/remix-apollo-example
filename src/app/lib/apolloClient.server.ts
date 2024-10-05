@@ -6,20 +6,17 @@ import { schema } from "../../server/graphql/schema.js";
 
 import { cache } from "./requestContext.js";
 
-function getClient() {
-  return cache(() => {
-    const client = new ApolloClient({
-      cache: new InMemoryCache(),
-      ssrMode: true,
-      link: new SchemaLink({
-        schema,
-        context: createBaseContext(),
-      }),
-    });
-    return client;
+function createApolloClient() {
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    ssrMode: true,
+    link: new SchemaLink({
+      schema,
+      context: createBaseContext(),
+    }),
   });
 }
 
-export const getServerClient = getClient;
+export const getServerClient = cache(createApolloClient);
 
-(globalThis as any).__getClient__ = getClient;
+(globalThis as any).__getClient__ = getServerClient;
