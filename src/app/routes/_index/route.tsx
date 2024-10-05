@@ -37,11 +37,7 @@ export async function loader() {
 }
 
 export async function clientLoader() {
-  return getPreloadedQueryRef({
-    queryKey: "/",
-    query,
-    variables: {},
-  });
+  return getPreloadedQueryRef({ query });
 }
 
 function Posts({

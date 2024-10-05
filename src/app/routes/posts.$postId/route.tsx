@@ -40,7 +40,6 @@ export async function clientLoader({ params }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
 
   return getPreloadedQueryRef({
-    queryKey: `/posts/${postId}`,
     query,
     variables: {
       postId,
