@@ -1,40 +1,44 @@
-# Welcome to Remix!
+# Remix Apollo Example
 
-- 📖 [Remix docs](https://remix.run/docs)
+This repo supports the following feature:
 
-## Development
+-   Server Side Rendering
+-   Client Side Routing
+-   Navigation with prefetching
 
-Run the dev server:
+## Getting started
 
-```shellscript
+```sh
+npm i
+cp .env.example .env
+
+# Start PostgreSQL DB
+docker compose up -d
+
+npm run migrate:dev
+
+npm run seed
+```
+
+### Start dev server
+
+```sh
 npm run dev
 ```
 
-## Deployment
+```sh
+open http://localhost:5137
+```
 
-First, build your app for production:
+And GraphQL playground is served as http://localhost:5137api/graphql
+
+### Start prod server
 
 ```sh
 npm run build
-```
-
-Then run the app in production mode:
-
-```sh
 npm start
 ```
 
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+```sh
+open http://localhost:3000
+```
