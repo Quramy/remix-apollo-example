@@ -2,9 +2,9 @@
 
 This repo supports the following feature:
 
--   Server Side Rendering
--   Client Side Routing
--   Navigation with prefetching
+- Server Side Rendering
+- Client Side Routing
+- Navigation with prefetching
 
 ## Getting started
 
