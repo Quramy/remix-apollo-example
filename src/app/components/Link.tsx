@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Link as OriginalLink, type LinkProps } from "@remix-run/react";
 import { useApolloClient, createQueryPreloader } from "@apollo/client/index.js";
 import type {
@@ -30,7 +30,9 @@ export function Link<
   V extends VariablesOf<T> = VariablesOf<T>
 >({ query, to: toHref, variables, ...rest }: Props<T, V>) {
   const client = useApolloClient();
-  const queryKey = createKey({ query, variables });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const queryKey = useMemo(() => createKey({ query, variables }), [toHref]);
 
   const handleMouseEnter = useCallback(() => {
     if (!query) return;
@@ -40,7 +42,7 @@ export function Link<
     });
     setQueryRef(queryKey, queryRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryKey, query]);
+  }, [queryKey]);
 
   return (
     <OriginalLink
