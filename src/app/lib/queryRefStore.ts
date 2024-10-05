@@ -1,3 +1,4 @@
+import type { DocumentNode, Kind } from "graphql";
 import {
   createQueryPreloader,
   type PreloadedQueryRef,
@@ -24,20 +25,50 @@ export function reset() {
   store = new Map<string, any>();
 }
 
-export type GetPreloadedQueryRefProps<T extends TypedDocumentNode<any, any>> = {
-  readonly queryKey: string;
-  readonly query: T;
-  readonly variables: VariablesOf<T>;
-};
+function getOperationName(node: DocumentNode) {
+  const operationDefs = node.definitions.filter(
+    (def) => def.kind === ("OperationDefinition" as Kind.OPERATION_DEFINITION)
+  );
+  if (operationDefs.length > 1) {
+    console.warn("GraphQL query must have exact one operation.");
+  } else if (operationDefs.length === 0) {
+    throw new Error("Query has no GraphQL operation");
+  }
+  const operation = operationDefs[0];
+  if (!operation.name?.value) {
+    throw new Error("Give unique query operation name.");
+  }
+  return operation.name.value;
+}
 
-export function getPreloadedQueryRef<T extends TypedDocumentNode<any, any>>({
-  queryKey,
+export type StructuredQueryKey<
+  T extends TypedDocumentNode<any, any>,
+  V extends VariablesOf<T> = VariablesOf<T>
+> = V extends { [K in string]: never }
+  ? {
+      readonly query: T;
+      readonly variables?: V;
+    }
+  : {
+      readonly query: T;
+      readonly variables: V;
+    };
+
+export function createKey({
+  query,
+  variables = {},
+}: StructuredQueryKey<TypedDocumentNode<unknown, unknown>>) {
+  return `${getOperationName(query)}:${JSON.stringify(variables)}`;
+}
+
+export function getPreloadedQueryRef<
+  T extends TypedDocumentNode<any, any>,
+  V extends VariablesOf<T>
+>({
   query,
   variables,
-}: GetPreloadedQueryRefProps<T>): PreloadedQueryRef<
-  ResultOf<T>,
-  VariablesOf<T>
-> {
+}: StructuredQueryKey<T, V>): PreloadedQueryRef<ResultOf<T>, V> {
+  const queryKey = createKey({ query, variables });
   const preloadedQueryRef = getQueryRef(queryKey);
   reset();
   if (preloadedQueryRef) {

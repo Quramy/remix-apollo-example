@@ -6,44 +6,41 @@ import type {
   VariablesOf,
 } from "@graphql-typed-document-node/core";
 
-import { getQueryRef, setQueryRef } from "#app/lib/queryRefStore";
+import {
+  createKey,
+  getQueryRef,
+  setQueryRef,
+  type StructuredQueryKey,
+} from "#app/lib/queryRefStore";
 
-export type Props<T extends TypedDocumentNode<any, any>> = Omit<
-  LinkProps,
-  "prefetch"
-> &
+export type Props<
+  T extends TypedDocumentNode<any, any>,
+  V extends VariablesOf<T> = VariablesOf<T>
+> = Omit<LinkProps, "prefetch"> &
   (
-    | {
-        readonly query: T;
-        readonly variables: VariablesOf<T>;
-        readonly queryKey?: string;
-      }
+    | StructuredQueryKey<T, V>
     | {
         readonly query: never;
         readonly variables: never;
-        readonly queryKey?: string;
       }
   );
 
-export function Link<T extends TypedDocumentNode<any, any>>({
-  query,
-  to: toHref,
-  queryKey,
-  variables,
-  ...rest
-}: Props<T>) {
+export function Link<
+  T extends TypedDocumentNode<any, any>,
+  V extends VariablesOf<T> = VariablesOf<T>
+>({ query, to: toHref, variables, ...rest }: Props<T, V>) {
   const client = useApolloClient();
-  const queryRefStoreKey = queryKey ?? toHref.toString();
+  const queryKey = createKey({ query, variables });
 
   const handleMouseEnter = useCallback(() => {
     if (!query) return;
-    if (getQueryRef(queryRefStoreKey)) return;
+    if (getQueryRef(queryKey)) return;
     const queryRef = createQueryPreloader(client)(query, {
       variables,
     });
-    setQueryRef(queryRefStoreKey, queryRef);
+    setQueryRef(queryKey, queryRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryRefStoreKey, query]);
+  }, [queryKey, query]);
 
   return (
     <OriginalLink
