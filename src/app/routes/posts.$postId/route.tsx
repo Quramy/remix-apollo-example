@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { QueryRef } from "@apollo/client/index.js";
+import type { QueryRef } from "@apollo/client/index.js";
 
 import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
@@ -41,7 +41,7 @@ export async function clientLoader({ params }: LoaderFunctionArgs) {
 
   return getPreloadedQueryRef({
     queryKey: `/posts/${postId}`,
-    query: query,
+    query,
     variables: {
       postId,
     },
@@ -72,6 +72,7 @@ function PostDetail({
 
 export default function Page() {
   const queryRef = useLoaderData<typeof clientLoader>();
+
   return (
     <main>
       <Suspense fallback="loading...">

@@ -6,16 +6,19 @@ import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
 
 import { graphql, type DocumentType } from "#app/gql";
-import { getServerClient } from "#app/lib/apolloClient.server";
+import { getSingletonApolloClient } from "#app/lib/apolloClient";
 import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
-import { Link } from "#app/components/Link";
 
-import { query as PostDetail_Query } from "./posts.$postId/route";
+import { Link } from "#app/components/Link";
+import { query as PostDetail_Query } from "#app/routes/posts.$postId/route";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Apollo Remix App" },
+    {
+      name: "description",
+      content: "An example application Remix with Apollo Client",
+    },
   ];
 };
 
@@ -29,7 +32,7 @@ export const query = graphql(`
 `);
 
 export async function loader() {
-  const apolloClient = getServerClient();
+  const apolloClient = getSingletonApolloClient();
   return await apolloClient.query({ query });
 }
 

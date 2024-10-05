@@ -12,6 +12,8 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
+import "#app/lib/apolloClient.server";
+
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
