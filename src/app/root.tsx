@@ -7,10 +7,9 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { ApolloProvider } from "@apollo/client/index.js";
-import {
-  getSingletonApolloClient,
-  HydratedApolloCache,
-} from "#app/lib/apolloClient";
+
+import { SerializedApolloCache } from "#support/apollo";
+import { getSingletonApolloClient } from "#app/lib/apolloClient";
 
 import "./tailwind.css";
 
@@ -39,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <ScrollRestoration />
-        <HydratedApolloCache client={getSingletonApolloClient()} />
+        <SerializedApolloCache client={getSingletonApolloClient()} />
         <Scripts />
       </body>
     </html>
