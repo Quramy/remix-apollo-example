@@ -12,9 +12,12 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
-import "#app/lib/apolloClient.server";
+import { registerService } from "#support/serviceRegistry";
+import { serviceMeta } from "#app/lib/apolloClient.server";
 
 const ABORT_DELAY = 5_000;
+
+registerService(serviceMeta);
 
 export default function handleRequest(
   request: Request,
