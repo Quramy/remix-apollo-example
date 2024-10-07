@@ -5,8 +5,9 @@ import { createBaseContext } from "../../server/graphql/yoga.js";
 import { schema } from "../../server/graphql/schema.js";
 
 import { cache } from "./requestContext.js";
+import { GetApolloClientMeta } from "./apolloClient";
 
-function createApolloClient() {
+function createApolloClient(): ApolloClient<unknown> {
   return new ApolloClient({
     cache: new InMemoryCache(),
     ssrMode: true,
@@ -17,6 +18,9 @@ function createApolloClient() {
   });
 }
 
-export const getServerClient = cache(createApolloClient);
+const getApolloClient = cache(createApolloClient);
 
-(globalThis as any).__getClient__ = getServerClient;
+export const serviceMeta = {
+  key: "getApolloClient",
+  value: getApolloClient,
+} as const satisfies GetApolloClientMeta;

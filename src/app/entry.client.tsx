@@ -7,7 +7,10 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { registerService } from "#support/serviceRegistry";
+import { serviceMeta } from "#app/lib/apolloClient.client";
 
+registerService(serviceMeta);
 startTransition(() => {
   hydrateRoot(
     document,

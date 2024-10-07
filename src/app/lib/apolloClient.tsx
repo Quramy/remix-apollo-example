@@ -1,20 +1,13 @@
-import { ApolloClient } from "@apollo/client/index.js";
+import type { ApolloClient } from "@apollo/client/index.js";
 
-import { HydratedMemoryCache } from "#support/apollo";
+import { lookupService } from "#support/serviceRegistry";
 
-let _client: ApolloClient<unknown> | undefined;
+export type GetApolloClientMeta = {
+  readonly key: "getApolloClient";
+  readonly value: () => ApolloClient<unknown>;
+};
 
-export function getSingletonApolloClient() {
-  if (typeof document !== "undefined") {
-    if (!_client) {
-      _client = new ApolloClient({
-        cache: new HydratedMemoryCache(),
-        uri: "/api/graphql",
-      });
-    }
-    return _client;
-  } else {
-    const client = (globalThis as any).__getClient__() as ApolloClient<unknown>;
-    return client;
-  }
+export function getSingletonApolloClient(): ApolloClient<unknown> {
+  const getApolloClient = lookupService<GetApolloClientMeta>("getApolloClient");
+  return getApolloClient();
 }
