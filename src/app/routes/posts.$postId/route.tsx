@@ -2,12 +2,12 @@ import { Suspense } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { QueryRef } from "@apollo/client/index.js";
 
-import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
+import { getQueryPreloader } from "#support/remix-apollo";
+import { useReadQuery } from "#support/remix-apollo/react";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
-import { getQueryPreloader } from "#app/lib/queryRefStore";
 
 import { Comment } from "./Comment";
 

@@ -11,7 +11,9 @@ import {
   getQueryRef,
   setQueryRef,
   type StructuredQueryKey,
-} from "#app/lib/queryRefStore";
+} from "./queryRefStore";
+
+export { useReadQuery } from "./hooks/useReadQuery";
 
 export type Props<
   T extends TypedDocumentNode<any, any>,

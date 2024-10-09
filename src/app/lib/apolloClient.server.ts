@@ -1,10 +1,10 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client/index.js";
 import { SchemaLink } from "@apollo/client/link/schema/index.js";
+import { cache } from "#support/remix-express";
 
 import { createBaseContext } from "../../server/graphql/yoga.js";
 import { schema } from "../../server/graphql/schema.js";
 
-import { cache } from "./requestContext.js";
 import { GetApolloClientMeta } from "./apolloClient";
 
 function createApolloClient(): ApolloClient<unknown> {

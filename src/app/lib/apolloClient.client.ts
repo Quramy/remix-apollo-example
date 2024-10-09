@@ -1,6 +1,5 @@
 import { ApolloClient } from "@apollo/client/index.js";
-
-import { HydratedMemoryCache } from "#support/apollo";
+import { HydratedMemoryCache } from "#support/remix-apollo";
 
 import type { GetApolloClientMeta } from "./apolloClient";
 
