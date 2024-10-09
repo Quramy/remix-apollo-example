@@ -7,8 +7,8 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { ApolloProvider } from "@apollo/client/index.js";
+import { SerializedApolloCache } from "#support/remix-apollo";
 
-import { SerializedApolloCache } from "#support/apollo";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
 
 import "./tailwind.css";

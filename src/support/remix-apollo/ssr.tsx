@@ -1,10 +1,7 @@
 import {
   ApolloClient,
   InMemoryCache,
-  useReadQuery as useOriginalReadQuery,
-  type UseReadQueryResult,
   type InMemoryCacheConfig,
-  type QueryRef,
 } from "@apollo/client/index.js";
 
 const globalKey = "__serialized_apollo_cache__";
@@ -32,14 +29,5 @@ export function SerializedApolloCache({
         __html: `if (!window.__hydrated_data__) window.${globalKey} = ${serialized};`,
       }}
     />
-  );
-}
-
-export function useReadQuery<TData>(
-  queryRef: QueryRef<TData>
-): UseReadQueryResult<TData> {
-  return (
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    ("toPromise" in queryRef ? useOriginalReadQuery(queryRef) : queryRef) as any
   );
 }

@@ -2,14 +2,12 @@ import { Suspense } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import type { QueryRef } from "@apollo/client/index.js";
 
-import { useReadQuery } from "#support/apollo";
 import { useLoaderData } from "#support/remix";
+import { getQueryPreloader } from "#support/remix-apollo";
+import { useReadQuery, Link } from "#support/remix-apollo/react";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
-import { getQueryPreloader } from "#app/lib/queryRefStore";
-
-import { Link } from "#app/components/Link";
 import { query as PostDetail_Query } from "#app/routes/posts.$postId/route";
 
 export const meta: MetaFunction = () => {
