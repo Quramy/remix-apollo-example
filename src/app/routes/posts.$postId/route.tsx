@@ -7,7 +7,7 @@ import { useLoaderData } from "#support/remix";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
-import { getPreloadedQueryRef } from "#app/lib/queryRefStore";
+import { getQueryPreloader } from "#app/lib/queryRefStore";
 
 import { Comment } from "./Comment";
 
@@ -38,8 +38,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
+  const apolloClient = getSingletonApolloClient();
 
-  return getPreloadedQueryRef({
+  return getQueryPreloader(apolloClient)({
     query,
     variables: {
       postId,

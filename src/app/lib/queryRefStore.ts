@@ -1,6 +1,7 @@
 import type { DocumentNode, Kind } from "graphql";
 import {
   createQueryPreloader,
+  type ApolloClient,
   type PreloadedQueryRef,
 } from "@apollo/client/index.js";
 import type {
@@ -8,8 +9,6 @@ import type {
   ResultOf,
   VariablesOf,
 } from "@graphql-typed-document-node/core";
-
-import { getSingletonApolloClient } from "#app/lib/apolloClient";
 
 let store = new Map<string, any>();
 
@@ -61,20 +60,23 @@ export function createKey({
   return `${getOperationName(query)}:${JSON.stringify(variables)}`;
 }
 
-export function getPreloadedQueryRef<
-  T extends TypedDocumentNode<any, any>,
-  V extends VariablesOf<T>
->({
-  query,
-  variables,
-}: StructuredQueryKey<T, V>): PreloadedQueryRef<ResultOf<T>, V> {
-  const queryKey = createKey({ query, variables });
-  const preloadedQueryRef = getQueryRef(queryKey);
-  reset();
-  if (preloadedQueryRef) {
-    return preloadedQueryRef;
+export function getQueryPreloader(client: ApolloClient<unknown>) {
+  const preloader = createQueryPreloader(client);
+  function getPreloadedQueryRef<
+    T extends TypedDocumentNode<any, any>,
+    V extends VariablesOf<T>
+  >({
+    query,
+    variables,
+  }: StructuredQueryKey<T, V>): PreloadedQueryRef<ResultOf<T>, V> {
+    const queryKey = createKey({ query, variables });
+    const preloadedQueryRef = getQueryRef(queryKey);
+    reset();
+    if (preloadedQueryRef) {
+      return preloadedQueryRef;
+    }
+    const queryRef = preloader(query, { variables });
+    return queryRef;
   }
-  const client = getSingletonApolloClient();
-  const queryRef = createQueryPreloader(client)(query, { variables });
-  return queryRef;
+  return getPreloadedQueryRef;
 }
