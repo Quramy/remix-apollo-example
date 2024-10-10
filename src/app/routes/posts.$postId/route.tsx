@@ -57,7 +57,7 @@ function PostDetail({
   if (!data.post) return <div>Not found...</div>;
   return (
     <div>
-      <h2>{data.post.title}</h2>
+      <h1>{data.post.title}</h1>
       <p>{data.post.body}</p>
       <ul>
         {data.post.comments.map((comment) => (
