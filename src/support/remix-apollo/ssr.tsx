@@ -4,11 +4,11 @@ import {
   type InMemoryCacheConfig,
 } from "@apollo/client/index.js";
 
-const globalKey = "__serialized_apollo_cache__";
+const globalSerializedDataKey = "__serialized_apollo_cache__";
 
 export class HydratedMemoryCache extends InMemoryCache {
   constructor(config?: InMemoryCacheConfig) {
-    const hydratedData = (window as any)[globalKey] ?? {};
+    const hydratedData = (window as any)[globalSerializedDataKey] ?? {};
     super(config);
     this.restore(hydratedData);
   }
@@ -26,7 +26,7 @@ export function SerializedApolloCache({
       type="module"
       id="SERIALIZED_APOLLO_CACHE"
       dangerouslySetInnerHTML={{
-        __html: `if (!window.__hydrated_data__) window.${globalKey} = ${serialized};`,
+        __html: `if (!window.${globalSerializedDataKey}) window.${globalSerializedDataKey} = ${serialized};`,
       }}
     />
   );
