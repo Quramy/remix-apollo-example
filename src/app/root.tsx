@@ -4,12 +4,16 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
+  isRouteErrorResponse,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { ApolloProvider } from "@apollo/client/index.js";
 import { SerializedApolloCache } from "#support/remix-apollo";
 
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
+
+import { NotFound } from "./routes/$/route";
 
 import "./tailwind.css";
 
@@ -51,4 +55,16 @@ export default function App() {
       <Outlet />
     </ApolloProvider>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (
+    (isRouteErrorResponse(error) && error.status === 404) ||
+    (error instanceof Response && error.status === 404)
+  ) {
+    return <NotFound />;
+  }
+  console.error(error);
+  return <main>Something went wrong...</main>;
 }

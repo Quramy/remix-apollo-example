@@ -8,6 +8,7 @@ import { useReadQuery } from "#support/remix-apollo/react";
 
 import { graphql, type DocumentType } from "#app/gql";
 import { getSingletonApolloClient } from "#app/lib/apolloClient";
+import { notFound } from "#app/lib/notFound";
 
 import { Comment } from "./Comment";
 
@@ -28,12 +29,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { postId } = params as { readonly postId: string };
   const apolloClient = getSingletonApolloClient();
 
-  return await apolloClient.query({
+  const result = await apolloClient.query({
     query,
     variables: {
       postId,
     },
   });
+
+  if (!result.data.post) notFound();
+
+  return result;
 }
 
 export async function clientLoader({ params }: LoaderFunctionArgs) {
@@ -53,14 +58,18 @@ function PostDetail({
 }: {
   queryRef: QueryRef<DocumentType<typeof query>>;
 }) {
-  const { data } = useReadQuery(queryRef);
-  if (!data.post) return <div>Not found...</div>;
+  const {
+    data: { post },
+  } = useReadQuery(queryRef);
+
+  if (!post) notFound();
+
   return (
     <div>
-      <h1>{data.post.title}</h1>
-      <p>{data.post.body}</p>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
       <ul>
-        {data.post.comments.map((comment) => (
+        {post.comments.map((comment) => (
           <li key={comment.id}>
             <Comment comment={comment} />
           </li>
