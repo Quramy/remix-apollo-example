@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "react-router";
 import type { QueryRef } from "@apollo/client/index.js";
 
 import { useLoaderData } from "#support/remix";

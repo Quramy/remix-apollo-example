@@ -6,8 +6,8 @@ import {
   ScrollRestoration,
   useRouteError,
   isRouteErrorResponse,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+  type LinksFunction,
+} from "react-router";
 import { ApolloProvider } from "@apollo/client/index.js";
 import { SerializedApolloCache } from "#support/remix-apollo";
 

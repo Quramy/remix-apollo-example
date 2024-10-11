@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "react-router";
 import type { QueryRef } from "@apollo/client/index.js";
 
 import { useLoaderData } from "#support/remix";
