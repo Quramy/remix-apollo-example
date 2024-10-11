@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { Link as OriginalLink, type LinkProps } from "@remix-run/react";
+import { Link as OriginalLink, type LinkProps } from "react-router";
 import { useApolloClient, createQueryPreloader } from "@apollo/client/index.js";
 import type {
   TypedDocumentNode,

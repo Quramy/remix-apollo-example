@@ -1,4 +1,4 @@
-import { useLoaderData as useRemixLoaderData } from "@remix-run/react";
+import { useLoaderData as useRemixLoaderData } from "react-router";
 
 export function useLoaderData<
   T extends (...args: any[]) => any = (...args: any[]) => any

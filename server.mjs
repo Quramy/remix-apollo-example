@@ -2,7 +2,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { AsyncLocalStorage } from "node:async_hooks";
 import express from "express";
-import remix from "@remix-run/express";
+import { createRequestHandler } from "@react-router/express";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -38,9 +38,9 @@ const handleClientAssets = devServer
   ? devServer.middlewares
   : express.static(resolve(__dirname, "./build/client"));
 
-const handleSSR = remix.createRequestHandler({
+const handleSSR = createRequestHandler({
   build: devServer
-    ? () => devServer.ssrLoadModule("virtual:remix/server-build")
+    ? () => devServer.ssrLoadModule("virtual:react-router/server-build")
     : await import("./build/server/index.js"),
 });
 
